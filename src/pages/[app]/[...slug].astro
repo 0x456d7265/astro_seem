@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import { getPath } from '../../utils/path';
 
 export async function getStaticPaths() {
   const customerLogs = await getCollection('customer');
@@ -39,9 +40,9 @@ const colorScheme = {
 <Layout>
   <div class="min-h-screen bg-gray-900 text-gray-100">
     <div class="max-w-4xl mx-auto px-4 py-8">
-      <a href="/" class={`text-${colorScheme}-400 hover:text-${colorScheme}-300 mb-8 inline-flex items-center gap-2 group`}>
+      <a href={getPath(`/${entry.data.app}/all`)} class={`text-${colorScheme}-400 hover:text-${colorScheme}-300 mb-8 inline-flex items-center gap-2 group`}>
         <span class="group-hover:-translate-x-1 transition-transform">←</span>
-        Tüm Güncellemeler
+        Geri Dön
       </a>
       
       <article class={`mt-8 prose prose-invert prose-lg max-w-none prose-headings:text-${colorScheme}-300 prose-a:text-${colorScheme}-400 hover:prose-a:text-${colorScheme}-300 prose-pre:bg-gray-800 prose-pre:border prose-pre:border-gray-700`}>
