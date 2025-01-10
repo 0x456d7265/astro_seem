@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { formatDateTurkish } from '../utils/date';
+import { getPath } from '../utils/path';
 
 const customerLogs = await getCollection('customer');
 const panelLogs = await getCollection('panel');
@@ -32,14 +33,14 @@ const sortedStaffLogs = staffLogs.sort(sortByDate).slice(0, 3);
               <span class="text-2xl">📱</span>
               <span class="bg-gradient-to-r from-blue-400 to-blue-600 text-transparent bg-clip-text">Seem Customer</span>
             </h2>
-            <a href="/customer/all" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 group">
+            <a href={getPath('/customer/all')} class="text-blue-400 hover:text-blue-300 flex items-center gap-2 group">
               Tümünü Gör
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </div>
           <div class="space-y-6">
             {sortedCustomerLogs.map((log) => (
-              <a href={`/customer/${log.slug}?from=home`} class="block group">
+              <a href={getPath(`/customer/${log.slug}?from=home`)} class="block group">
                 <article class="border-l-4 border-blue-500 pl-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-r-lg transition-all">
                   <h3 class="text-xl font-medium mb-2 text-blue-300 group-hover:text-blue-200">
                     {log.data.title}
@@ -60,14 +61,14 @@ const sortedStaffLogs = staffLogs.sort(sortByDate).slice(0, 3);
               <span class="text-2xl">🔧</span>
               <span class="bg-gradient-to-r from-emerald-400 to-emerald-600 text-transparent bg-clip-text">Seem Panel</span>
             </h2>
-            <a href="/panel/all" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-2 group">
+            <a href={getPath('/panel/all')} class="text-emerald-400 hover:text-emerald-300 flex items-center gap-2 group">
               Tümünü Gör
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </div>
           <div class="space-y-6">
             {sortedPanelLogs.map((log) => (
-              <a href={`/panel/${log.slug}?from=home`} class="block group">
+              <a href={getPath(`/panel/${log.slug}?from=home`)} class="block group">
                 <article class="border-l-4 border-emerald-500 pl-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-r-lg transition-all">
                   <h3 class="text-xl font-medium mb-2 text-emerald-300 group-hover:text-emerald-200">
                     {log.data.title}
@@ -88,14 +89,14 @@ const sortedStaffLogs = staffLogs.sort(sortByDate).slice(0, 3);
               <span class="text-2xl">👥</span>
               <span class="bg-gradient-to-r from-purple-400 to-purple-600 text-transparent bg-clip-text">Seem Staff</span>
             </h2>
-            <a href="/staff/all" class="text-purple-400 hover:text-purple-300 flex items-center gap-2 group">
+            <a href={getPath('/staff/all')} class="text-purple-400 hover:text-purple-300 flex items-center gap-2 group">
               Tümünü Gör
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </div>
           <div class="space-y-6">
             {sortedStaffLogs.map((log) => (
-              <a href={`/staff/${log.slug}?from=home`} class="block group">
+              <a href={getPath(`/staff/${log.slug}?from=home`)} class="block group">
                 <article class="border-l-4 border-purple-500 pl-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-r-lg transition-all">
                   <h3 class="text-xl font-medium mb-2 text-purple-300 group-hover:text-purple-200">
                     {log.data.title}
