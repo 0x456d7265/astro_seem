@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const customerLogs = await getCollection('customer');
+  const panelLogs = await getCollection('panel');
+  const staffLogs = await getCollection('staff');
+
+  const allPaths = [
+    ...customerLogs.map(entry => ({
+      params: { app: 'customer', slug: entry.slug },
+      props: { entry }
+    })),
+    ...panelLogs.map(entry => ({
+      params: { app: 'panel', slug: entry.slug },
+      props: { entry }
+    })),
+    ...staffLogs.map(entry => ({
+      params: { app: 'staff', slug: entry.slug },
+      props: { entry }
+    }))
+  ];
+
+  return allPaths;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Define color scheme based on app type
+const colorScheme = {
+  customer: 'blue',
+  panel: 'emerald',
+  staff: 'purple'
+}[entry.data.app];
+---
+
+<Layout>
+  <div class="min-h-screen bg-gray-900 text-gray-100">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+      <a href="/" class={`text-${colorScheme}-400 hover:text-${colorScheme}-300 mb-8 inline-flex items-center gap-2 group`}>
+        <span class="group-hover:-translate-x-1 transition-transform">←</span>
+        Tüm Güncellemeler
+      </a>
+      
+      <article class={`mt-8 prose prose-invert prose-lg max-w-none prose-headings:text-${colorScheme}-300 prose-a:text-${colorScheme}-400 hover:prose-a:text-${colorScheme}-300 prose-pre:bg-gray-800 prose-pre:border prose-pre:border-gray-700`}>
+        <Content />
+      </article>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  /* Custom styles for markdown content */
+  .prose {
+    min-height: calc(100vh - 200px); /* Ensure minimum height for content */
+  }
+
+  .prose h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, var(--tw-prose-headings), #4a5568);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .prose h2 {
+    font-size: 1.75rem;
+    margin-top: 2rem;
+    border-bottom: 2px solid #2d3748;
+    padding-bottom: 0.5rem;
+  }
+
+  .prose ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+  }
+
+  .prose li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+    white-space: normal; /* Ensure text wraps properly */
+    overflow-wrap: break-word; /* Break long words if needed */
+  }
+
+  .prose li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--tw-prose-headings);
+  }
+</style> 

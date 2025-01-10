@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { formatDateTurkish } from '../utils/date';
+
+const customerLogs = await getCollection('customer');
+const panelLogs = await getCollection('panel');
+const staffLogs = await getCollection('staff');
+
+// Sort changelogs by date
+const sortByDate = (a: any, b: any) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+
+const sortedCustomerLogs = customerLogs.sort(sortByDate).slice(0, 3);
+const sortedPanelLogs = panelLogs.sort(sortByDate).slice(0, 3);
+const sortedStaffLogs = staffLogs.sort(sortByDate).slice(0, 3);
+---
+
+<Layout>
+  <div class="min-h-screen bg-gray-900 text-gray-100 py-12 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="w-full text-center mb-16 py-4">
+        <h1 class="text-4xl md:text-5xl font-bold inline-block bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text leading-relaxed py-2">
+          Seem Menu Güncelleme Notları
+        </h1>
+      </div>
+      
+      <div class="grid gap-10">
+        <!-- Customer App -->
+        <section class="bg-gray-800 rounded-xl shadow-xl p-8 border border-gray-700 hover:border-blue-500 transition-all">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold flex items-center gap-3">
+              <span class="text-2xl">📱</span>
+              <span class="bg-gradient-to-r from-blue-400 to-blue-600 text-transparent bg-clip-text">Seem Customer</span>
+            </h2>
+            <a href="/customer/all" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 group">
+              Tümünü Gör
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </div>
+          <div class="space-y-6">
+            {sortedCustomerLogs.map((log) => (
+              <a href={`/customer/${log.slug}?from=home`} class="block group">
+                <article class="border-l-4 border-blue-500 pl-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-r-lg transition-all">
+                  <h3 class="text-xl font-medium mb-2 text-blue-300 group-hover:text-blue-200">
+                    {log.data.title}
+                  </h3>
+                  <div class="flex justify-end items-center">
+                    <span class="text-gray-400">{formatDateTurkish(log.data.date)}</span>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section class="bg-gray-800 rounded-xl shadow-xl p-8 border border-gray-700 hover:border-emerald-500 transition-all">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold flex items-center gap-3">
+              <span class="text-2xl">🔧</span>
+              <span class="bg-gradient-to-r from-emerald-400 to-emerald-600 text-transparent bg-clip-text">Seem Panel</span>
+            </h2>
+            <a href="/panel/all" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-2 group">
+              Tümünü Gör
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </div>
+          <div class="space-y-6">
+            {sortedPanelLogs.map((log) => (
+              <a href={`/panel/${log.slug}?from=home`} class="block group">
+                <article class="border-l-4 border-emerald-500 pl-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-r-lg transition-all">
+                  <h3 class="text-xl font-medium mb-2 text-emerald-300 group-hover:text-emerald-200">
+                    {log.data.title}
+                  </h3>
+                  <div class="flex justify-end items-center">
+                    <span class="text-gray-400">{formatDateTurkish(log.data.date)}</span>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <!-- Staff Portal -->
+        <section class="bg-gray-800 rounded-xl shadow-xl p-8 border border-gray-700 hover:border-purple-500 transition-all">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold flex items-center gap-3">
+              <span class="text-2xl">👥</span>
+              <span class="bg-gradient-to-r from-purple-400 to-purple-600 text-transparent bg-clip-text">Seem Staff</span>
+            </h2>
+            <a href="/staff/all" class="text-purple-400 hover:text-purple-300 flex items-center gap-2 group">
+              Tümünü Gör
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </div>
+          <div class="space-y-6">
+            {sortedStaffLogs.map((log) => (
+              <a href={`/staff/${log.slug}?from=home`} class="block group">
+                <article class="border-l-4 border-purple-500 pl-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-r-lg transition-all">
+                  <h3 class="text-xl font-medium mb-2 text-purple-300 group-hover:text-purple-200">
+                    {log.data.title}
+                  </h3>
+                  <div class="flex justify-end items-center">
+                    <span class="text-gray-400">{formatDateTurkish(log.data.date)}</span>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout>

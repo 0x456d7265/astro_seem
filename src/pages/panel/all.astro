@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { formatDateTurkish } from '../../utils/date';
+
+const panelLogs = await getCollection('panel');
+const sortByDate = (a: any, b: any) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+const sortedPanelLogs = panelLogs.sort(sortByDate);
+---
+
+<Layout>
+  <div class="min-h-screen bg-gray-900 text-gray-100 py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-8">
+        <a href="/" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-2 group">
+          <span class="group-hover:-translate-x-1 transition-transform">←</span>
+          Geri Dön
+        </a>
+      </div>
+      
+      <h1 class="text-4xl font-bold mb-12 bg-gradient-to-r from-emerald-400 to-emerald-600 text-transparent bg-clip-text">
+        Seem Panel - Tüm Güncellemeler
+      </h1>
+
+      <div class="space-y-6">
+        {sortedPanelLogs.map((log) => (
+          <a href={`/panel/${log.slug}?from=panel-all`} class="block group">
+            <article class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 hover:border-emerald-500 hover:bg-gray-700/50 transition-all">
+              <h3 class="text-xl font-medium mb-2 text-emerald-300 group-hover:text-emerald-200">
+                {log.data.title}
+              </h3>
+              <div class="flex justify-end items-center">
+                <span class="text-gray-400">{formatDateTurkish(log.data.date)}</span>
+              </div>
+            </article>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout> 
